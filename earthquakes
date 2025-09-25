@@ -1,0 +1,39 @@
+https://observablehq.com/d/6b41ef10a3b36a4d
+
+{
+  const magBarChart = vl.markBar()
+    .title('Number of Events by Magnitude')
+    .data(earthquakes)
+    .encode(
+      vl.x().fieldQ('magnitude').bin({maxbins : 30}).title('Magnitude'),
+      vl.y().count().title(null)
+    )
+    .width(width/2 - 40)
+    .height(150)
+
+  const EventsByDepth = vl.markBar()
+    .title('Events By Depth')
+    .data(earthquakes)
+    .encode(
+      vl.x().fieldQ('depth').bin({maxbins : 30}).title('Depth'),
+      vl.y().count().title(null)
+    )
+    .width(width/2 - 40)
+    .height(150)
+  
+  const vis1 = vl.hconcat(magBarChart, EventsByDepth)
+
+  const EventsPerHour = vl.markLine()
+    .title('Events Per Hour')
+    .data(earthquakes)
+    .encode(
+      vl.x().fieldT('origintime').timeUnit('hoursdatemonth').title('Date'),
+      vl.y().count().title(null)
+    )
+    .width(width - 40)
+    .height(150)
+
+  const vis2 = vl.vconcat(vis1, EventsPerHour)
+
+  return vis2.render();
+}
